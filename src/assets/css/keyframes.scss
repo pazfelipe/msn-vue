@@ -1,5 +1,14 @@
 @keyframes unread-messages {
-  0% {background-color: brown;}
-  50% {background-color: yellow;}
-  100% {background-color: brown;}
+  0% {
+    background-color: brown;
+    border-color: brown;
+  }
+  50% {
+    background-color: yellow;
+    border-color: yellow;
+  }
+  100% {
+    background-color: brown;
+    border-color: brown;
+  }
 }

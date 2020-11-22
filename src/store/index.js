@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 
 import conversation from './conversation'
+import contacts from './contacts'
 
 export default createStore({
   state: {
@@ -10,6 +11,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    conversation
+    conversation,
+    contacts
   }
 })

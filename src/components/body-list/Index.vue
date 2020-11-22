@@ -3,7 +3,7 @@
     <div
       v-for="(contact,i) in contacts"
       :key="i"
-      :class="focused(i)"
+      :class="focusedClass(i)"
     >
       <ContactList
         :contact="contact.contact"
@@ -16,26 +16,43 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ContactList from './contact-list/Index'
 export default {
   name: 'ComponentBodyList',
   components: { ContactList },
-  props: {
-    contacts: {
-      type: Array,
-      default: () => []
+  computed: {
+    ...mapGetters(['getFocusedConversation', 'getContacts']),
+    contacts () {
+      return this.getContacts
+    },
+    focused () {
+      return this.getFocusedConversation
     }
   },
-  computed: {
-    ...mapGetters(['getFocusedConversation'])
+  mounted () {
+    setInterval(() => {
+      const tmpId = Number(this.focused.replace('Contact ', ''))
+      if (tmpId !== this.contacts[0].id) {
+        this.updateStatusMessageContact({
+          index: 0,
+          update: { ...this.contacts[0], hasUnreadMessages: true }
+        })
+        // this.play('/assets/sounds/msn.mp3')
+      }
+    }, 5000)
   },
   methods: {
-    focused (id) {
-      if ('Contact '.concat(id) === this.getFocusedConversation) {
+    ...mapActions(['updateStatusMessageContact']),
+    focusedClass (id) {
+      if ('Contact '.concat(id) === this.focused) {
         return 'focused'
       }
       return ''
+    },
+    play (sound) {
+      this.sound = new Audio(sound)
+      this.sound.play()
     }
   }
 }
